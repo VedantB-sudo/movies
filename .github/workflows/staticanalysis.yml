@@ -29,4 +29,13 @@ jobs:
 
       - name: Run/execute pylint on tracked Python files
         run: |
-          pylint $(git ls-files '*.py')
+          # Use a variable to handle cases where no python files are found
+          PYTHON_FILES=$(git ls-files '*.py')
+          if [ -n "$PYTHON_FILES" ]; then
+            pylint $PYTHON_FILES
+          else
+            echo "No Python files found to lint."
+          fi
+
+      - name: Check AWS CLI version
+        run: aws --version
